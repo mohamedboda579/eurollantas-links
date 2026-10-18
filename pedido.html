@@ -112,7 +112,7 @@ details.rin[open] > summary::after { content: "–"; }
   <a class="back" href="./">← Volver</a>
   <img class="logo" src="logo.jpg" alt="Eurollantas S.A." width="760" height="456">
   <h1>Pedido para talleres</h1>
-  <p class="intro">Elige las medidas y las cantidades. Al final se abre WhatsApp con tu pedido listo; solo toca enviar.</p>
+  <p class="intro">Elige las medidas y las cantidades. Al final toca "Enviar pedido".</p>
 
   <section class="card" aria-labelledby="h-datos">
     <h2 id="h-datos">Tus datos</h2>
@@ -123,13 +123,6 @@ details.rin[open] > summary::after { content: "–"; }
     <div class="field">
       <label for="tel">Tu teléfono <span style="color:var(--bad)">* obligatorio</span></label>
       <input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej. 6000-0000" required aria-required="true">
-    </div>
-    <div>
-      <span class="lbl" id="l-tipo">Tipo de llanta</span>
-      <div class="seg" role="radiogroup" aria-labelledby="l-tipo">
-        <label><input type="radio" name="tipo" value="Usadas" checked><span>Usadas</span></label>
-        <label><input type="radio" name="tipo" value="Nuevas"><span>Nuevas</span></label>
-      </div>
     </div>
     <div>
       <span class="lbl" id="l-ent">Entrega</span>
@@ -146,6 +139,7 @@ details.rin[open] > summary::after { content: "–"; }
         <option>Juan Díaz</option>
         <option>Bethania</option>
         <option>La Chorrera</option>
+        <option>Bodega</option>
       </select>
     </div>
     <div class="field" id="box-dir" hidden>
@@ -191,7 +185,7 @@ details.rin[open] > summary::after { content: "–"; }
     <div class="sum"><span>Tu pedido</span><b id="total">0 llantas</b></div>
     <p class="hint" id="hint" aria-live="polite"></p>
     <p class="err" id="err" role="alert" hidden></p>
-    <button class="send" id="send" type="button">Enviar pedido por WhatsApp</button>
+    <button class="send" id="send" type="button">Enviar pedido</button>
   </div>
 </div>
 
@@ -287,13 +281,11 @@ details.rin[open] > summary::after { content: "–"; }
   }
 
   function buildMessage() {
-    var tipo = document.querySelector('input[name="tipo"]:checked').value;
     var ent = document.querySelector('input[name="ent"]:checked').value;
     var lines = [];
     lines.push("*PEDIDO PARA TALLER*");
     lines.push("Taller: " + $("taller").value.trim());
     lines.push("Teléfono: " + $("tel").value.trim());
-    lines.push("Tipo: " + tipo);
     if (ent === "retiro") lines.push("Entrega: Retiro en " + $("suc").value);
     else lines.push("Entrega: A domicilio" + ($("dir").value.trim() ? " - " + $("dir").value.trim() : ""));
     lines.push("");

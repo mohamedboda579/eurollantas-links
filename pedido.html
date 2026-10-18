@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedido para talleres | Eurollantas</title>
+<meta name="description" content="Arma tu pedido de llantas para taller y envíalo por WhatsApp a Eurollantas.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="logo.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: una columna estrecha; datos del taller, medidas por rin con contador, barra fija abajo para enviar */
+:root {
+  --asphalt: #000000;
+  --panel: #161413;
+  --field: #0d0c0b;
+  --line: #342f2b;
+  --ink: #f5efe7;
+  --muted: #b3a89c;
+  --flame: #ff7a00;
+  --ember: #ffb21a;
+  --wa: #25d366;
+  --wa-ink: #07210f;
+  --bad: #ff6b5e;
+  --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--asphalt); color: var(--ink); font: 400 16px/1.5 var(--body); }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+.wrap {
+  max-width: 520px; margin-inline: auto; display: flex; flex-direction: column; gap: 16px;
+  padding-block: 16px 150px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.back { color: var(--muted); font-size: 14px; text-decoration: none; align-self: flex-start; padding-block: 6px; }
+.back:hover { color: var(--ink); }
+.logo { display: block; width: 100%; max-width: 220px; height: auto; margin-inline: auto; }
+h1 { margin: 0; text-align: center; font: 700 36px/1.05 var(--display); text-transform: uppercase; letter-spacing: .04em; text-wrap: balance; }
+.intro { margin: 0; text-align: center; color: var(--muted); font-size: 15px; text-wrap: balance; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.card > h2 { margin: 0; font: 600 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--ember); }
+label, .lbl { display: block; font: 600 13px/1.2 var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+input[type=text], input[type=tel], input[type=search], select, textarea {
+  width: 100%; min-width: 0; background: var(--field); color: var(--ink); border: 1px solid var(--line); border-radius: 8px;
+  padding: 12px; font: 400 16px/1.3 var(--body);
+}
+textarea { resize: vertical; min-height: 72px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, summary:focus-visible, .seg input:focus-visible + span {
+  outline: 3px solid var(--ember); outline-offset: 2px;
+}
+.invalid { border-color: var(--bad) !important; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.seg label { margin: 0; text-transform: none; letter-spacing: 0; font: 500 16px/1.2 var(--body); color: var(--ink); }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; text-align: center; padding: 12px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--field); cursor: pointer; }
+.seg input:checked + span { border-color: var(--flame); background: #231505; color: var(--ember); font-weight: 600; }
+.field { min-width: 0; }
+.search { position: sticky; top: 0; z-index: 3; background: var(--panel); padding-bottom: 4px; }
+details.rin { border: 1px solid var(--line); border-radius: 8px; background: var(--field); }
+details.rin > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 14px; font: 700 24px/1 var(--display); text-transform: uppercase; letter-spacing: .06em;
+}
+details.rin > summary::-webkit-details-marker { display: none; }
+details.rin > summary::after { content: "+"; font: 600 24px/1 var(--body); color: var(--ember); margin-left: auto; padding-left: 8px; }
+details.rin[open] > summary::after { content: "–"; }
+.badge { font: 600 14px/1 var(--body); color: var(--wa-ink); background: var(--wa); border-radius: 999px; padding: 5px 10px; text-transform: none; letter-spacing: 0; }
+.rows { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.row.has { background: #1a1209; }
+.size { font: 600 22px/1.1 var(--display); letter-spacing: .03em; min-width: 0; }
+.size small { font: 500 13px/1 var(--body); color: var(--ember); letter-spacing: .06em; margin-left: 4px; }
+.step { display: flex; align-items: center; gap: 4px; flex: none; }
+.step button {
+  width: 44px; height: 44px; border-radius: 8px; border: 1px solid var(--line); background: #211e1b; color: var(--ink);
+  font: 600 24px/1 var(--body); cursor: pointer; touch-action: manipulation;
+}
+.step button[data-act=plus] { background: var(--flame); border-color: var(--flame); color: #1a0d00; }
+.step button:disabled { opacity: .35; cursor: default; }
+.step output { min-width: 34px; text-align: center; font: 700 22px/1 var(--display); }
+.none { color: var(--muted); text-align: center; margin: 4px 0 0; }
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: rgba(0,0,0,.94); border-top: 2px solid var(--flame);
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.bar-in { max-width: 520px; margin-inline: auto; display: flex; flex-direction: column; gap: 8px; }
+.sum { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--muted); }
+.sum b { font: 700 24px/1 var(--display); color: var(--ink); letter-spacing: .03em; }
+.err { margin: 0; color: var(--bad); font-size: 14px; }
+.send {
+  min-height: 52px; width: 100%; border: 0; border-radius: 10px; background: var(--wa); color: var(--wa-ink); cursor: pointer;
+  font: 700 21px/1.1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 10px 16px;
+}
+.fallback { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--flame); background: #1a1209; border-radius: 10px; padding: 14px; }
+.fallback p { margin: 0; font-size: 15px; }
+.fallback textarea { min-height: 150px; font-size: 14px; }
+.copy { min-height: 48px; border-radius: 8px; border: 1px solid var(--flame); background: transparent; color: var(--ink); font: 700 18px/1 var(--display); text-transform: uppercase; letter-spacing: .05em; cursor: pointer; }
+.fine { margin: 0; text-align: center; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="./">← Volver</a>
+  <img class="logo" src="logo.jpg" alt="Eurollantas S.A." width="760" height="456">
+  <h1>Pedido para talleres</h1>
+  <p class="intro">Elige las medidas y las cantidades. Al final se abre WhatsApp con tu pedido listo; solo toca enviar.</p>
+
+  <section class="card" aria-labelledby="h-datos">
+    <h2 id="h-datos">Tus datos</h2>
+    <div class="field">
+      <label for="taller">Nombre del taller</label>
+      <input id="taller" type="text" autocomplete="organization" placeholder="Ej. Taller Los Hermanos">
+    </div>
+    <div class="field">
+      <label for="tel">Tu teléfono</label>
+      <input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej. 6000-0000">
+    </div>
+    <div>
+      <span class="lbl" id="l-tipo">Tipo de llanta</span>
+      <div class="seg" role="radiogroup" aria-labelledby="l-tipo">
+        <label><input type="radio" name="tipo" value="Usadas" checked><span>Usadas</span></label>
+        <label><input type="radio" name="tipo" value="Nuevas"><span>Nuevas</span></label>
+      </div>
+    </div>
+    <div>
+      <span class="lbl" id="l-ent">Entrega</span>
+      <div class="seg" role="radiogroup" aria-labelledby="l-ent">
+        <label><input type="radio" name="ent" value="retiro" checked><span>Retiro en sucursal</span></label>
+        <label><input type="radio" name="ent" value="entrega"><span>Entrega a domicilio</span></label>
+      </div>
+    </div>
+    <div class="field" id="box-suc">
+      <label for="suc">Sucursal</label>
+      <select id="suc">
+        <option value="">Elige una sucursal</option>
+        <option>Ernesto T. Lefevre</option>
+        <option>Juan Díaz</option>
+        <option>Bethania</option>
+        <option>La Chorrera</option>
+      </select>
+    </div>
+    <div class="field" id="box-dir" hidden>
+      <label for="dir">Dirección o zona de entrega</label>
+      <textarea id="dir" placeholder="Ej. Vía España, frente a..."></textarea>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h-med">
+    <h2 id="h-med">Medidas</h2>
+    <div class="search">
+      <label for="q">Buscar medida</label>
+      <input id="q" type="search" inputmode="numeric" placeholder="Ej. 205/55 o 15" autocomplete="off">
+    </div>
+    <div id="rins" style="display:flex;flex-direction:column;gap:10px"></div>
+    <p class="none" id="none" hidden>No hay medidas con esa búsqueda. Puedes escribirla abajo en "Otra medida".</p>
+  </section>
+
+  <section class="card" aria-labelledby="h-otro">
+    <h2 id="h-otro">Otra medida y notas</h2>
+    <div class="field">
+      <label for="otra">Otra medida (opcional)</label>
+      <textarea id="otra" placeholder="Ej. 205/55R16 x 4, 195/65R15 x 2"></textarea>
+    </div>
+    <div class="field">
+      <label for="notas">Notas (opcional)</label>
+      <textarea id="notas" placeholder="Ej. Necesito que sean del mismo desgaste"></textarea>
+    </div>
+  </section>
+
+  <div class="fallback" id="fallback" hidden>
+    <p><b>¿No se abrió WhatsApp?</b> Copia tu pedido y envíalo al +507 6037-4431.</p>
+    <textarea id="msg" readonly aria-label="Tu pedido"></textarea>
+    <button class="copy" id="copy" type="button">Copiar pedido</button>
+    <p id="copied" hidden>Copiado. Pégalo en WhatsApp.</p>
+  </div>
+
+  <p class="fine">Tu pedido se confirma por WhatsApp. Precios y disponibilidad los confirma Eurollantas.</p>
+</main>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="sum"><span>Tu pedido</span><b id="total">0 llantas</b></div>
+    <p class="err" id="err" role="alert" hidden></p>
+    <button class="send" id="send" type="button">Enviar pedido por WhatsApp</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SIZES = {"13": ["155/70R13", "155/80R13", "165/65R13", "165/70R13", "175/70R13", "185/70R13"], "14": ["155/65R14", "165/60R14", "165/65R14", "165/70R14", "175/65R14", "175/70R14", "175/80R14", "185/55R14", "185/60R14", "185/65R14", "185/70R14", "185/80R14", "195/70R14"], "15": ["175/55R15", "175/65R15", "185/55R15", "185/60R15", "185/65R15", "195/50R15", "195/55R15", "195/60R15", "195/65R15", "195/70R15", "195/70R15 C", "195/80R15 C", "205/50R15", "205/55R15", "205/60R15", "205/65R15", "205/70R15 C", "215/70R15", "215/70R15 C", "225/70R15", "225/70R15 C", "235/75R15"], "16": ["185/55R16", "205/55R16", "205/60R16", "205/65R16 C", "215/60R16", "215/65R16", "215/70R16", "225/60R16", "225/65R16", "235/60R16", "235/65R16", "245/70R16", "265/70R16"], "17": ["205/40R17", "205/45R17", "205/50R17", "205/55R17", "215/40R17", "215/45R17", "215/50R17", "215/55R17", "215/60R17", "215/65R17", "225/45R17", "225/60R17", "225/65R17", "235/55R17", "235/60R17", "235/65R17", "265/65R17"], "18": ["205/40R18", "215/35R18", "215/40R18", "215/45R18", "215/55R18", "225/35R18", "225/40R18", "225/45R18", "225/50R18", "225/55R18", "225/60R18", "235/55R18", "235/60R18", "255/55R18", "265/60R18"], "19": ["225/55R19", "235/55R19", "245/45R19"], "20": ["225/30R20", "245/35R20", "245/40R20", "245/45R20", "255/35R20", "255/40R20", "255/45R20", "255/50R20", "255/55R20", "265/50R20", "275/40R20", "275/45R20", "275/50R20", "285/50R20"]};
+  var PHONE = "50760374431";
+  var qty = {};
+  var $ = function (id) { return document.getElementById(id); };
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  var norm = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]/g, ""); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+
+  function labelHtml(s) {
+    var c = / C$/.test(s);
+    return esc(c ? s.slice(0, -2) : s) + (c ? "<small>C</small>" : "");
+  }
+
+  function build() {
+    var html = "";
+    Object.keys(SIZES).sort(function (a, b) { return a - b; }).forEach(function (rin) {
+      html += '<details class="rin" data-rin="' + rin + '"><summary><span>Rin ' + rin + '</span><span class="badge" hidden></span></summary><div class="rows">';
+      SIZES[rin].forEach(function (s) {
+        html += '<div class="row" data-size="' + esc(s) + '" data-key="' + norm(s) + '">' +
+          '<span class="size">' + labelHtml(s) + '</span>' +
+          '<span class="step"><button type="button" data-act="minus" aria-label="Quitar una ' + esc(s) + '" disabled>−</button>' +
+          '<output aria-live="polite">0</output>' +
+          '<button type="button" data-act="plus" aria-label="Agregar una ' + esc(s) + '">+</button></span></div>';
+      });
+      html += "</div></details>";
+    });
+    $("rins").innerHTML = html;
+  }
+
+  function total() { var t = 0; for (var k in qty) t += qty[k]; return t; }
+
+  function refresh() {
+    var rows = document.querySelectorAll(".row");
+    Array.prototype.forEach.call(rows, function (row) {
+      var n = qty[row.getAttribute("data-size")] || 0;
+      row.querySelector("output").textContent = n;
+      row.querySelector('[data-act="minus"]').disabled = n === 0;
+      row.classList.toggle("has", n > 0);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("details.rin"), function (d) {
+      var sum = 0;
+      Array.prototype.forEach.call(d.querySelectorAll(".row"), function (r) { sum += qty[r.getAttribute("data-size")] || 0; });
+      var b = d.querySelector(".badge");
+      b.hidden = sum === 0;
+      b.textContent = sum + (sum === 1 ? " llanta" : " llantas");
+    });
+    var t = total();
+    $("total").textContent = t + (t === 1 ? " llanta" : " llantas");
+  }
+
+  function filter() {
+    var q = norm($("q").value);
+    var any = false;
+    Array.prototype.forEach.call(document.querySelectorAll("details.rin"), function (d) {
+      var shown = 0;
+      Array.prototype.forEach.call(d.querySelectorAll(".row"), function (r) {
+        var ok = !q || r.getAttribute("data-key").indexOf(q) !== -1 || ("rin" + d.getAttribute("data-rin")).indexOf(q) !== -1;
+        r.hidden = !ok;
+        if (ok) shown++;
+      });
+      d.hidden = shown === 0;
+      if (shown) any = true;
+      if (q && shown) d.open = true;
+    });
+    $("none").hidden = any;
+  }
+
+  function buildMessage() {
+    var tipo = document.querySelector('input[name="tipo"]:checked').value;
+    var ent = document.querySelector('input[name="ent"]:checked').value;
+    var lines = [];
+    lines.push("*PEDIDO PARA TALLER*");
+    lines.push("Taller: " + $("taller").value.trim());
+    lines.push("Teléfono: " + $("tel").value.trim());
+    lines.push("Tipo: " + tipo);
+    if (ent === "retiro") lines.push("Entrega: Retiro en " + $("suc").value);
+    else lines.push("Entrega: A domicilio" + ($("dir").value.trim() ? " - " + $("dir").value.trim() : ""));
+    lines.push("");
+    lines.push("*Medidas:*");
+    var any = false;
+    Object.keys(SIZES).sort(function (a, b) { return a - b; }).forEach(function (rin) {
+      SIZES[rin].forEach(function (s) {
+        if (qty[s]) { lines.push("• " + s + " x " + qty[s]); any = true; }
+      });
+    });
+    if (!any) lines.push("(ver otra medida)");
+    var t = total();
+    if (t) lines.push("Total: " + t + (t === 1 ? " llanta" : " llantas"));
+    if ($("otra").value.trim()) { lines.push(""); lines.push("Otra medida: " + $("otra").value.trim()); }
+    if ($("notas").value.trim()) { lines.push(""); lines.push("Notas: " + $("notas").value.trim()); }
+    return lines.join("\n");
+  }
+
+  function validate() {
+    var ent = document.querySelector('input[name="ent"]:checked').value;
+    var checks = [
+      [$("taller"), $("taller").value.trim() !== "", "Escribe el nombre del taller."],
+      [$("tel"), $("tel").value.replace(/\D/g, "").length >= 7, "Escribe un teléfono de contacto."],
+      [$("suc"), ent !== "retiro" || $("suc").value !== "", "Elige la sucursal donde retiras."],
+      [$("dir"), ent !== "entrega" || $("dir").value.trim() !== "", "Escribe la dirección o zona de entrega."],
+      [$("rins"), total() > 0 || $("otra").value.trim() !== "", "Agrega al menos una medida."]
+    ];
+    ["taller", "tel", "suc", "dir"].forEach(function (id) { $(id).classList.remove("invalid"); });
+    for (var i = 0; i < checks.length; i++) {
+      if (!checks[i][1]) {
+        if (checks[i][0].id !== "rins") checks[i][0].classList.add("invalid");
+        $("err").textContent = checks[i][2];
+        $("err").hidden = false;
+        checks[i][0].scrollIntoView({ behavior: "smooth", block: "center" });
+        if (checks[i][0].focus && checks[i][0].id !== "rins") { try { checks[i][0].focus({ preventScroll: true }); } catch (e) {} }
+        return false;
+      }
+    }
+    $("err").hidden = true;
+    return true;
+  }
+
+  function send() {
+    if (!validate()) return;
+    store.set("euro_taller", $("taller").value.trim());
+    store.set("euro_tel", $("tel").value.trim());
+    var msg = buildMessage();
+    $("msg").value = msg;
+    $("fallback").hidden = false;
+    var url = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+    var w = null;
+    try { w = window.open(url, "_blank", "noopener"); } catch (e) {}
+    if (!w) { window.location.href = url; }
+  }
+
+  function copy() {
+    var ta = $("msg");
+    var done = function () { $("copied").hidden = false; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} });
+    } else { ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} }
+  }
+
+  function toggleEnt() {
+    var ent = document.querySelector('input[name="ent"]:checked').value;
+    $("box-suc").hidden = ent !== "retiro";
+    $("box-dir").hidden = ent !== "entrega";
+  }
+
+  build();
+  $("taller").value = store.get("euro_taller");
+  $("tel").value = store.get("euro_tel");
+  refresh();
+
+  $("rins").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-act]");
+    if (!b) return;
+    var s = b.closest(".row").getAttribute("data-size");
+    var n = qty[s] || 0;
+    n = b.getAttribute("data-act") === "plus" ? Math.min(n + 1, 999) : Math.max(n - 1, 0);
+    if (n) qty[s] = n; else delete qty[s];
+    refresh();
+  });
+  $("q").addEventListener("input", filter);
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="ent"]'), function (r) { r.addEventListener("change", toggleEnt); });
+  $("send").addEventListener("click", send);
+  $("copy").addEventListener("click", copy);
+  window.__euro = { buildMessage: buildMessage, qty: qty, refresh: refresh };
+})();
+</script>
+</body>
+</html>

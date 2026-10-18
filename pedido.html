@@ -92,10 +92,12 @@ details.rin[open] > summary::after { content: "–"; }
 .bar-in { max-width: 520px; margin-inline: auto; display: flex; flex-direction: column; gap: 8px; }
 .sum { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--muted); }
 .sum b { font: 700 24px/1 var(--display); color: var(--ink); letter-spacing: .03em; }
+.hint { margin: 0; font-size: 13px; color: var(--muted); }
+.send.off { opacity: .5; }
 .err { margin: 0; color: var(--bad); font-size: 14px; }
 .send {
-  min-height: 52px; width: 100%; border: 0; border-radius: 10px; background: var(--wa); color: var(--wa-ink); cursor: pointer;
-  font: 700 21px/1.1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 10px 16px;
+  min-height: 56px; width: 100%; border: 0; border-radius: 10px; background: var(--wa); color: var(--wa-ink); cursor: pointer;
+  font: 700 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: .05em; padding: 12px 16px;
 }
 .fallback { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--flame); background: #1a1209; border-radius: 10px; padding: 14px; }
 .fallback p { margin: 0; font-size: 15px; }
@@ -115,12 +117,12 @@ details.rin[open] > summary::after { content: "–"; }
   <section class="card" aria-labelledby="h-datos">
     <h2 id="h-datos">Tus datos</h2>
     <div class="field">
-      <label for="taller">Nombre del taller</label>
-      <input id="taller" type="text" autocomplete="organization" placeholder="Ej. Taller Los Hermanos">
+      <label for="taller">Nombre del taller <span style="color:var(--bad)">*</span></label>
+      <input id="taller" type="text" autocomplete="organization" placeholder="Ej. Taller Los Hermanos" required aria-required="true">
     </div>
     <div class="field">
-      <label for="tel">Tu teléfono</label>
-      <input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej. 6000-0000">
+      <label for="tel">Tu teléfono <span style="color:var(--bad)">* obligatorio</span></label>
+      <input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej. 6000-0000" required aria-required="true">
     </div>
     <div>
       <span class="lbl" id="l-tipo">Tipo de llanta</span>
@@ -165,7 +167,7 @@ details.rin[open] > summary::after { content: "–"; }
   <section class="card" aria-labelledby="h-otro">
     <h2 id="h-otro">Otra medida y notas</h2>
     <div class="field">
-      <label for="otra">Otra medida (opcional)</label>
+      <label for="otra">Otra medida, rin 21 u otras (opcional)</label>
       <textarea id="otra" placeholder="Ej. 205/55R16 x 4, 195/65R15 x 2"></textarea>
     </div>
     <div class="field">
@@ -187,6 +189,7 @@ details.rin[open] > summary::after { content: "–"; }
 <div class="bar">
   <div class="bar-in">
     <div class="sum"><span>Tu pedido</span><b id="total">0 llantas</b></div>
+    <p class="hint" id="hint" aria-live="polite"></p>
     <p class="err" id="err" role="alert" hidden></p>
     <button class="send" id="send" type="button">Enviar pedido por WhatsApp</button>
   </div>
@@ -194,7 +197,7 @@ details.rin[open] > summary::after { content: "–"; }
 
 <script>
 (function () {
-  var SIZES = {"13": ["155/70R13", "155/80R13", "165/65R13", "165/70R13", "175/70R13", "185/70R13"], "14": ["155/65R14", "165/60R14", "165/65R14", "165/70R14", "175/65R14", "175/70R14", "175/80R14", "185/55R14", "185/60R14", "185/65R14", "185/70R14", "185/80R14", "195/70R14"], "15": ["175/55R15", "175/65R15", "185/55R15", "185/60R15", "185/65R15", "195/50R15", "195/55R15", "195/60R15", "195/65R15", "195/70R15", "195/70R15 C", "195/80R15 C", "205/50R15", "205/55R15", "205/60R15", "205/65R15", "205/70R15 C", "215/70R15", "215/70R15 C", "225/70R15", "225/70R15 C", "235/75R15"], "16": ["185/55R16", "205/55R16", "205/60R16", "205/65R16 C", "215/60R16", "215/65R16", "215/70R16", "225/60R16", "225/65R16", "235/60R16", "235/65R16", "245/70R16", "265/70R16"], "17": ["205/40R17", "205/45R17", "205/50R17", "205/55R17", "215/40R17", "215/45R17", "215/50R17", "215/55R17", "215/60R17", "215/65R17", "225/45R17", "225/60R17", "225/65R17", "235/55R17", "235/60R17", "235/65R17", "265/65R17"], "18": ["205/40R18", "215/35R18", "215/40R18", "215/45R18", "215/55R18", "225/35R18", "225/40R18", "225/45R18", "225/50R18", "225/55R18", "225/60R18", "235/55R18", "235/60R18", "255/55R18", "265/60R18"], "19": ["225/55R19", "235/55R19", "245/45R19"], "20": ["225/30R20", "245/35R20", "245/40R20", "245/45R20", "255/35R20", "255/40R20", "255/45R20", "255/50R20", "255/55R20", "265/50R20", "275/40R20", "275/45R20", "275/50R20", "285/50R20"]};
+  var SIZES = {"13": ["135/70R13", "145/70R13", "145/80R13", "155/70R13", "155/80R13", "165/65R13", "165/70R13", "175/70R13", "185/70R13"], "14": ["155/65R14", "165/60R14", "165/65R14", "165/70R14", "175/65R14", "175/70R14", "175/80R14", "185/55R14", "185/60R14", "185/65R14", "185/70R14", "185/80R14", "195/70R14"], "15": ["145/60R15", "155/65R15", "165/60R15", "165/65R15", "175/55R15", "175/65R15", "185/55R15", "185/60R15", "185/65R15", "195/50R15", "195/55R15", "195/60R15", "195/65R15", "195/70R15", "195/70R15 C", "195/80R15 C", "205/50R15", "205/55R15", "205/60R15", "205/65R15", "205/70R15 C", "215/70R15", "215/70R15 C", "225/50R15", "225/70R15", "225/70R15 C", "235/75R15"], "16": ["185/55R16", "195/50R16", "195/55R16", "195/60R16", "195/65R16", "205/50R16", "205/55R16", "205/60R16", "205/65R16 C", "205/75R16", "215/40R16", "215/45R16", "215/55R16", "215/60R16", "215/65R16", "215/70R16", "215/75R16", "225/45R16", "225/50R16", "225/55R16", "225/60R16", "225/65R16", "235/60R16", "235/65R16", "245/70R16", "265/70R16"], "17": ["205/40R17", "205/45R17", "205/50R17", "205/55R17", "205/60R17", "205/65R17", "215/40R17", "215/45R17", "215/50R17", "215/55R17", "215/60R17", "215/65R17", "225/45R17", "225/60R17", "225/65R17", "235/45R17", "235/50R17", "235/55R17", "235/60R17", "235/65R17", "245/45R17", "265/65R17"], "18": ["205/40R18", "215/35R18", "215/40R18", "215/45R18", "215/50R18", "215/55R18", "225/35R18", "225/40R18", "225/45R18", "225/50R18", "225/55R18", "225/60R18", "235/40R18", "235/45R18", "235/55R18", "235/60R18", "245/35R18", "245/45R18", "255/55R18", "265/60R18"], "19": ["225/35R19", "225/40R19", "225/45R19", "225/55R19", "235/45R19", "235/55R19", "240/40R19", "245/45R19", "255/40R19", "275/45R19"], "20": ["225/30R20", "245/35R20", "245/40R20", "245/45R20", "255/35R20", "255/40R20", "255/45R20", "255/50R20", "255/55R20", "265/50R20", "275/40R20", "275/45R20", "275/50R20", "285/50R20"]};
   var PHONE = "50760374431";
   var qty = {};
   var $ = function (id) { return document.getElementById(id); };
@@ -226,6 +229,24 @@ details.rin[open] > summary::after { content: "–"; }
     $("rins").innerHTML = html;
   }
 
+  function missing() {
+    var ent = document.querySelector('input[name="ent"]:checked').value, m = [];
+    if (!$("taller").value.trim()) m.push("nombre del taller");
+    if ($("tel").value.replace(/\D/g, "").length < 7) m.push("teléfono");
+    if (ent === "retiro" && !$("suc").value) m.push("sucursal");
+    if (ent === "entrega" && !$("dir").value.trim()) m.push("dirección");
+    if (total() === 0 && !$("otra").value.trim()) m.push("medidas");
+    return m;
+  }
+
+  function updateHint() {
+    var m = missing();
+    $("hint").textContent = m.length ? "Falta: " + m.join(", ") : "Listo para enviar";
+    $("send").classList.toggle("off", m.length > 0);
+    $("send").setAttribute("aria-disabled", m.length > 0 ? "true" : "false");
+    if (!m.length) $("err").hidden = true;
+  }
+
   function total() { var t = 0; for (var k in qty) t += qty[k]; return t; }
 
   function refresh() {
@@ -245,6 +266,7 @@ details.rin[open] > summary::after { content: "–"; }
     });
     var t = total();
     $("total").textContent = t + (t === 1 ? " llanta" : " llantas");
+    updateHint();
   }
 
   function filter() {
@@ -294,7 +316,7 @@ details.rin[open] > summary::after { content: "–"; }
     var ent = document.querySelector('input[name="ent"]:checked').value;
     var checks = [
       [$("taller"), $("taller").value.trim() !== "", "Escribe el nombre del taller."],
-      [$("tel"), $("tel").value.replace(/\D/g, "").length >= 7, "Escribe un teléfono de contacto."],
+      [$("tel"), $("tel").value.replace(/\D/g, "").length >= 7, "El teléfono es obligatorio para enviar el pedido."],
       [$("suc"), ent !== "retiro" || $("suc").value !== "", "Elige la sucursal donde retiras."],
       [$("dir"), ent !== "entrega" || $("dir").value.trim() !== "", "Escribe la dirección o zona de entrega."],
       [$("rins"), total() > 0 || $("otra").value.trim() !== "", "Agrega al menos una medida."]
@@ -339,6 +361,7 @@ details.rin[open] > summary::after { content: "–"; }
     var ent = document.querySelector('input[name="ent"]:checked').value;
     $("box-suc").hidden = ent !== "retiro";
     $("box-dir").hidden = ent !== "entrega";
+    updateHint();
   }
 
   build();
@@ -357,6 +380,10 @@ details.rin[open] > summary::after { content: "–"; }
   });
   $("q").addEventListener("input", filter);
   Array.prototype.forEach.call(document.querySelectorAll('input[name="ent"]'), function (r) { r.addEventListener("change", toggleEnt); });
+  ["taller", "tel", "suc", "dir", "otra"].forEach(function (id) {
+    $(id).addEventListener("input", function () { $(id).classList.remove("invalid"); updateHint(); });
+    $(id).addEventListener("change", updateHint);
+  });
   $("send").addEventListener("click", send);
   $("copy").addEventListener("click", copy);
   window.__euro = { buildMessage: buildMessage, qty: qty, refresh: refresh };

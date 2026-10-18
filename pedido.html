@@ -336,6 +336,25 @@ details.rin[open] > summary::after { content: "–"; }
     return true;
   }
 
+  var MAIL_ENDPOINT = "https://formsubmit.co/ajax/eurollantassa@gmail.com";
+  function copiaCorreo(msg) {
+    try {
+      fetch(MAIL_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          _subject: "Nuevo pedido: " + $("taller").value.trim() + " (" + $("tel").value.trim() + ")",
+          _template: "box",
+          _captcha: "false",
+          Taller: $("taller").value.trim(),
+          Telefono: $("tel").value.trim(),
+          Pedido: msg
+        }),
+        keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   function send() {
     if (!validate()) return;
     store.set("euro_taller", $("taller").value.trim());
@@ -343,6 +362,7 @@ details.rin[open] > summary::after { content: "–"; }
     var msg = buildMessage();
     $("msg").value = msg;
     $("fallback").hidden = false;
+    copiaCorreo(msg);
     var url = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
     var w = null;
     try { w = window.open(url, "_blank", "noopener"); } catch (e) {}

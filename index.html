@@ -68,8 +68,19 @@ body {
 .branches h2 {
   margin: 0 0 8px; font: 600 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--ember);
 }
-.branches ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; }
-.branches li { font-size: 16px; padding-block: 4px; border-bottom: 1px solid var(--line); }
+.branches ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.branches li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.branches li:last-child { border-bottom: 0; padding-bottom: 0; }
+.b-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.b-name { font-size: 17px; font-weight: 600; }
+.b-status { white-space: nowrap; flex-shrink: 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.b-status.open { color: var(--wa); border-color: var(--wa); }
+.b-status.closed { color: #ff8a7a; border-color: #ff8a7a; }
+.b-hours { margin: 2px 0 10px; font-size: 14px; color: var(--muted); }
+.b-actions { display: flex; gap: 8px; }
+.b-actions a { flex: 1; text-align: center; padding: 10px 8px; border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none; border: 1px solid var(--line); color: var(--ink); }
+.b-actions a.map { background: var(--flame); border-color: var(--flame); color: #000; }
+.b-actions a:focus-visible { outline: 3px solid var(--ember); outline-offset: 2px; }
 .mgmt { margin: 0; font-size: 13px; line-height: 1.4; color: var(--muted); text-align: center; opacity: .8; }
 .mgmt b { color: var(--muted); font-weight: 600; }
 .mgmt a { color: var(--muted); text-underline-offset: 3px; }
@@ -119,10 +130,38 @@ body {
   <section class="branches" aria-labelledby="suc">
     <h2 id="suc">Nuestras sucursales</h2>
     <ul>
-      <li>Ernesto T. Lefevre</li>
-      <li>Juan Díaz</li>
-      <li>Bethania</li>
-      <li>La Chorrera</li>
+      <li>
+        <div class="b-top"><span class="b-name">Ernesto T. Lefevre</span><span class="b-status" data-status></span></div>
+        <p class="b-hours">Lunes a sábado · 8:00 a.m. – 5:00 p.m.</p>
+        <div class="b-actions">
+          <a class="map" href="https://maps.google.com/?cid=16659069806102511480" target="_blank" rel="noopener">Cómo llegar</a>
+          <a href="tel:+5073909390">Llamar 390-9390</a>
+        </div>
+      </li>
+      <li>
+        <div class="b-top"><span class="b-name">Bethania</span><span class="b-status" data-status></span></div>
+        <p class="b-hours">Lunes a sábado · 8:00 a.m. – 5:00 p.m.</p>
+        <div class="b-actions">
+          <a class="map" href="https://maps.google.com/?cid=15460818073472582458" target="_blank" rel="noopener">Cómo llegar</a>
+          <a href="tel:+5073819835">Llamar 381-9835</a>
+        </div>
+      </li>
+      <li>
+        <div class="b-top"><span class="b-name">Plaza Carolina (Juan Díaz)</span><span class="b-status" data-status></span></div>
+        <p class="b-hours">Lunes a sábado · 8:00 a.m. – 5:00 p.m.</p>
+        <div class="b-actions">
+          <a class="map" href="https://maps.google.com/?cid=14907370351047180534" target="_blank" rel="noopener">Cómo llegar</a>
+          <a href="tel:+5073754176">Llamar 375-4176</a>
+        </div>
+      </li>
+      <li>
+        <div class="b-top"><span class="b-name">La Chorrera</span><span class="b-status" data-status></span></div>
+        <p class="b-hours">Lunes a sábado · 8:00 a.m. – 5:00 p.m.</p>
+        <div class="b-actions">
+          <a class="map" href="https://maps.google.com/?cid=10067649828562594726" target="_blank" rel="noopener">Cómo llegar</a>
+          <a href="tel:+5073419446">Llamar 341-9446</a>
+        </div>
+      </li>
     </ul>
   </section>
 
@@ -130,5 +169,21 @@ body {
 
   <p class="fine">Eurollantas S.A. Tu mejor opción.</p>
 </main>
+<script>
+(function () {
+  // Estado "Abierto ahora / Cerrado" según la hora de Panamá (lun–sáb 8:00–17:00)
+  try {
+    var parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Panama", weekday: "short", hour: "numeric", minute: "numeric", hour12: false }).formatToParts(new Date());
+    var get = function (t) { return parts.filter(function (p) { return p.type === t; })[0].value; };
+    var day = get("weekday"), mins = (parseInt(get("hour"), 10) % 24) * 60 + parseInt(get("minute"), 10);
+    var open = day !== "Sun" && mins >= 480 && mins < 1020;
+    var els = document.querySelectorAll("[data-status]");
+    for (var i = 0; i < els.length; i++) {
+      els[i].textContent = open ? "Abierto ahora" : "Cerrado";
+      els[i].className = "b-status " + (open ? "open" : "closed");
+    }
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

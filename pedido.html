@@ -6,6 +6,13 @@
 <title>Pedido para talleres | Eurollantas</title>
 <meta name="description" content="Arma tu pedido de llantas para taller y envíalo por WhatsApp a Eurollantas.">
 <meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pedidos">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="icon" href="logo.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
 <style>
@@ -41,6 +48,11 @@ img { max-width: 100%; }
 .back:hover { color: var(--ink); }
 .logo { display: block; width: 100%; max-width: 220px; height: auto; margin-inline: auto; }
 h1 { margin: 0; text-align: center; font: 700 36px/1.05 var(--display); text-transform: uppercase; letter-spacing: .04em; text-wrap: balance; }
+.install { display: flex; gap: 12px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; color: var(--muted); }
+.install b { color: var(--ink); }
+.install p { margin: 0; flex: 1; line-height: 1.35; }
+.install button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 8px 12px; }
+.install .go { background: var(--flame); border-color: var(--flame); color: #000; font-weight: 600; }
 .intro { margin: 0; text-align: center; color: var(--muted); font-size: 15px; text-wrap: balance; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .card > h2 { margin: 0; font: 600 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--ember); }
@@ -113,6 +125,11 @@ details.rin[open] > summary::after { content: "–"; }
   <img class="logo" src="logo.jpg" alt="Eurollantas S.A." width="760" height="456">
   <h1>Pedido para talleres</h1>
   <p class="intro">Elige las medidas y las cantidades. Al final toca "Enviar pedido".</p>
+  <div class="install" id="install" hidden>
+    <p id="install-txt"><b>Guárdala como app.</b> Así abres el pedido con un toque desde tu pantalla de inicio.</p>
+    <button type="button" class="go" id="install-go" hidden>Instalar</button>
+    <button type="button" id="install-x" aria-label="Cerrar">✕</button>
+  </div>
 
   <section class="card" aria-labelledby="h-datos">
     <h2 id="h-datos">Tus datos</h2>
@@ -400,6 +417,40 @@ details.rin[open] > summary::after { content: "–"; }
   $("copy").addEventListener("click", copy);
   window.__euro = { buildMessage: buildMessage, qty: qty, refresh: refresh };
 })();
+
+  // App instalable: botón en Android/Chrome, instrucciones en iPhone
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var store = {
+      get: function (k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } },
+      set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
+    var box = $("install"), txt = $("install-txt"), go = $("install-go"), deferred = null;
+    var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+    var dismissed = false;
+    try { dismissed = store.get("euro_install_x") === "1"; } catch (e) {}
+    if (standalone || dismissed) return;
+    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (ios) {
+      txt.innerHTML = "<b>Guárdala como app.</b> Toca <b>Compartir</b> y luego <b>Agregar a pantalla de inicio</b>.";
+      box.hidden = false;
+    }
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault(); deferred = e; go.hidden = false; box.hidden = false;
+    });
+    go.addEventListener("click", function () {
+      if (!deferred) return;
+      deferred.prompt(); deferred = null; box.hidden = true;
+    });
+    $("install-x").addEventListener("click", function () {
+      box.hidden = true;
+      try { store.set("euro_install_x", "1"); } catch (e) {}
+    });
+    window.addEventListener("appinstalled", function () { box.hidden = true; });
+  })();
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
 </script>
 </body>
 </html>

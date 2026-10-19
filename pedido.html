@@ -53,6 +53,11 @@ h1 { margin: 0; text-align: center; font: 700 36px/1.05 var(--display); text-tra
 .install p { margin: 0; flex: 1; line-height: 1.35; }
 .install button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 8px 12px; }
 .install .go { background: var(--flame); border-color: var(--flame); color: #000; font-weight: 600; }
+.hist-item { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 0; border-top: 1px solid var(--line); }
+.hist-item:first-of-type { border-top: 0; }
+.hist-item p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.35; min-width: 0; }
+.hist-item p b { color: var(--ink); display: block; font-size: 15px; }
+.hist-item button { font: inherit; font-weight: 600; cursor: pointer; border-radius: 8px; border: 1px solid var(--flame); background: transparent; color: var(--ink); padding: 8px 12px; flex-shrink: 0; }
 .intro { margin: 0; text-align: center; color: var(--muted); font-size: 15px; text-wrap: balance; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .card > h2 { margin: 0; font: 600 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--ember); }
@@ -193,6 +198,11 @@ details.rin[open] > summary::after { content: "–"; }
     <button class="copy" id="copy" type="button">Copiar pedido</button>
     <p id="copied" hidden>Copiado. Pégalo en WhatsApp.</p>
   </div>
+
+  <section class="card" id="hist" aria-labelledby="h-hist" hidden>
+    <h2 id="h-hist">Mis últimos pedidos</h2>
+    <div id="histlist"></div>
+  </section>
 
   <p class="fine">Tu pedido se confirma por WhatsApp. Precios y disponibilidad los confirma Eurollantas.</p>
 </main>
@@ -364,6 +374,32 @@ details.rin[open] > summary::after { content: "–"; }
     } catch (e) {}
   }
 
+  // Historial de pedidos (solo en este teléfono) para poder repetirlos
+  function leerHistorial() {
+    try { var h = JSON.parse(store.get("euro_hist") || "[]"); return Array.isArray(h) ? h : []; } catch (e) { return []; }
+  }
+  function guardarHistorial() {
+    var items = {};
+    for (var k in qty) items[k] = qty[k];
+    if (!Object.keys(items).length) return;
+    var h = leerHistorial();
+    h.unshift({ t: Date.now(), n: total(), q: items });
+    store.set("euro_hist", JSON.stringify(h.slice(0, 8)));
+    mostrarHistorial();
+  }
+  function mostrarHistorial() {
+    var h = leerHistorial(), box = $("hist");
+    box.hidden = h.length === 0;
+    var html = "";
+    h.forEach(function (o, i) {
+      var d = new Date(o.t), when = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+      var keys = Object.keys(o.q);
+      var resumen = keys.slice(0, 3).map(function (k) { return esc(k) + " x " + o.q[k]; }).join(", ") + (keys.length > 3 ? " y " + (keys.length - 3) + " más" : "");
+      html += '<div class="hist-item"><p><b>' + when + " · " + o.n + (o.n === 1 ? " llanta" : " llantas") + "</b>" + resumen + '</p><button type="button" data-hist="' + i + '">Repetir</button></div>';
+    });
+    $("histlist").innerHTML = html;
+  }
+
   function send() {
     if (!validate()) return;
     store.set("euro_taller", $("taller").value.trim());
@@ -371,6 +407,7 @@ details.rin[open] > summary::after { content: "–"; }
     var msg = buildMessage();
     $("msg").value = msg;
     $("fallback").hidden = false;
+    guardarHistorial();
     copiaCorreo(msg);
     var url = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
     var w = null;
@@ -397,6 +434,17 @@ details.rin[open] > summary::after { content: "–"; }
   $("taller").value = store.get("euro_taller");
   $("tel").value = store.get("euro_tel");
   refresh();
+  mostrarHistorial();
+  $("histlist").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-hist]");
+    if (!b) return;
+    var o = leerHistorial()[parseInt(b.getAttribute("data-hist"), 10)];
+    if (!o) return;
+    qty = {};
+    for (var k in o.q) { if (document.querySelector('.row[data-size="' + k + '"]')) qty[k] = o.q[k]; }
+    refresh();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
   $("rins").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-act]");

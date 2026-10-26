@@ -81,6 +81,19 @@ body {
 .b-actions a { flex: 1; text-align: center; padding: 10px 8px; border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none; border: 1px solid var(--line); color: var(--ink); }
 .b-actions a.map { background: var(--flame); border-color: var(--flame); color: #000; }
 .b-actions a:focus-visible { outline: 3px solid var(--ember); outline-offset: 2px; }
+.promo { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.promo h2 { margin: 0; font: 700 28px/1.1 var(--display); text-transform: uppercase; letter-spacing: .04em; color: var(--ember); }
+.promo h2 span { color: var(--ink); }
+.promo .sub { margin: 4px 0 12px; font-size: 14px; color: var(--muted); }
+.promo details { border-top: 1px solid var(--line); }
+.promo summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0; min-height: 48px; font: 700 24px/1.1 var(--display); letter-spacing: .03em; }
+.promo summary::-webkit-details-marker { display: none; }
+.promo summary::after { content: "+"; font: 600 24px/1 var(--body); color: var(--flame); }
+.promo details[open] summary::after { content: "\2212"; }
+.promo summary:focus-visible { outline: 3px solid var(--ember); outline-offset: 2px; }
+.promo details p { margin: 0 0 12px; font-size: 15px; color: var(--muted); }
+.promo .note { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+.promo .btn { margin-top: 12px; min-height: 56px; font-size: 20px; }
 .mgmt { margin: 0; font-size: 13px; line-height: 1.4; color: var(--muted); text-align: center; opacity: .8; }
 .mgmt b { color: var(--muted); font-weight: 600; }
 .mgmt a { color: var(--muted); text-underline-offset: 3px; }
@@ -102,6 +115,37 @@ body {
   <div class="logo"><img src="logo.jpg" alt="Eurollantas S.A. Tu mejor opción" width="760" height="456"></div>
 
   <p class="tagline">Llantas nuevas y usadas</p>
+
+  <section class="promo" aria-labelledby="promo-t">
+    <h2 id="promo-t"><span>Llantas a</span> $9.99</h2>
+    <p class="sub">Toca tu medida y mira qué autos la usan.</p>
+    <details>
+      <summary>155/65 R14</summary>
+      <p>Spark, Picanto, i10, Atos, Alto, Celerio, Sirion</p>
+    </details>
+    <details>
+      <summary>175/65 R15</summary>
+      <p>Yaris, Vitz, Fit/Jazz, Accent, Rio, Swift, Sail, Note, Mazda 2</p>
+    </details>
+    <details>
+      <summary>205/60 R16</summary>
+      <p>Corolla, Elantra, Cerato, Sentra, Mazda 3, Civic, Focus, Jetta, Tucson, Sportage</p>
+    </details>
+    <details>
+      <summary>235/55 R17</summary>
+      <p>RAV4, Highlander, CR-V, Santa Fe, Sorento, Rogue, Murano, CX-5, Edge</p>
+    </details>
+    <details>
+      <summary>225/50 R18</summary>
+      <p>Camry, Accord, Mazda 6, Sonata, Optima/K5, Altima, Passat</p>
+    </details>
+    <details>
+      <summary>245/45 R19</summary>
+      <p>Camry, Avalon, Accord, Sonata, K5, Maxima, Clase C y E, Serie 3 y 5, A4, A6</p>
+    </details>
+    <p class="note">Lista orientativa: la medida de fábrica cambia según versión y año. Escríbenos tu marca, modelo y año y te confirmamos.</p>
+    <a class="btn btn-wa" href="https://wa.me/5073909390?text=Hola%20Eurollantas,%20quiero%20confirmar%20si%20la%20promoci%C3%B3n%20de%20%249.99%20le%20sirve%20a%20mi%20carro.%20Marca,%20modelo%20y%20a%C3%B1o:%20" target="_blank" rel="noopener">Confirmar mi medida</a>
+  </section>
 
   <div class="actions">
     <a class="btn btn-wa" href="https://wa.me/5073909390?text=Hola%20Eurollantas,%20quiero%20informaci%C3%B3n%20sobre%20llantas" target="_blank" rel="noopener">

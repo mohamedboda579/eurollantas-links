@@ -64,9 +64,6 @@ body {
 .tagline { margin: 0; text-align: center; font: 600 22px/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--ember); }
 .hint { margin: 0; font-size: 14px; color: var(--muted); text-align: center; }
 .hint b { color: var(--ink); font-weight: 600; user-select: all; }
-.gallery { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; margin: 0 -2px; padding: 2px; scrollbar-width: none; }
-.gallery::-webkit-scrollbar { display: none; }
-.gallery img { flex: 0 0 46%; width: 46%; height: auto; max-width: 230px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px; scroll-snap-align: start; background: #111; }
 .branches { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
 .branches h2 {
   margin: 0 0 8px; font: 600 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--ember);
@@ -171,6 +168,7 @@ body {
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2h6a1 1 0 0 1 1 1v1h3a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1Zm1 2v2h4V4h-4Zm-2 5v2h2V9H8Zm4 0v2h4V9h-4Zm-4 4v2h2v-2H8Zm4 0v2h4v-2h-4Z"/></svg>
       Pedido para talleres
     </a>
+    <a class="btn btn-ig" href="fotos.html">Ver fotos de nuestras llantas</a>
     <a class="btn btn-ig" href="https://www.instagram.com/eurollantapanama" target="_blank" rel="noopener">
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 5.2c3.52 0 3.94.01 5.33.08 3.57.16 5.23 1.85 5.39 5.39.06 1.39.08 1.8.08 5.33s-.02 3.94-.08 5.33c-.16 3.54-1.82 5.23-5.39 5.39-1.39.06-1.8.08-5.33.08s-3.94-.02-5.33-.08c-3.58-.16-5.23-1.86-5.39-5.39C5.2 19.94 5.2 19.52 5.2 16s.01-3.94.08-5.33C5.44 7.1 7.1 5.44 10.67 5.28 12.06 5.21 12.48 5.2 16 5.2ZM16 2.8c-3.58 0-4.03.02-5.44.08C5.78 3.1 3.1 5.77 2.88 10.56 2.82 11.97 2.8 12.42 2.8 16s.02 4.03.08 5.44c.22 4.78 2.88 7.46 7.68 7.68 1.41.06 1.86.08 5.44.08s4.03-.02 5.44-.08c4.78-.22 7.46-2.88 7.68-7.68.06-1.41.08-1.86.08-5.44s-.02-4.03-.08-5.44c-.22-4.78-2.88-7.46-7.68-7.68C20.03 2.82 19.58 2.8 16 2.8Zm0 6.9a6.3 6.3 0 1 0 0 12.6 6.3 6.3 0 0 0 0-12.6Zm0 10.4a4.1 4.1 0 1 1 0-8.2 4.1 4.1 0 0 1 0 8.2Zm6.55-12.12a1.47 1.47 0 1 0 0 2.94 1.47 1.47 0 0 0 0-2.94Z"/></svg>
       Síguenos en Instagram
@@ -180,16 +178,6 @@ body {
       Síguenos en Facebook
     </a>
     <p class="hint">¿Prefieres llamar o guardar el número?<br>Ventas: <b>+507 390-9390</b> · Al mayor: <b>+507 6037-4431</b></p>
-  </div>
-
-  <div class="gallery" role="region" aria-label="Fotos de llantas" tabindex="0">
-    <img src="fotos/llantas-1.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 1">
-    <img src="fotos/llantas-2.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 2">
-    <img src="fotos/llantas-3.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 3">
-    <img src="fotos/llantas-4.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 4">
-    <img src="fotos/llantas-5.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 5">
-    <img src="fotos/llantas-6.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 6">
-    <img src="fotos/llantas-7.jpg" width="560" height="560" loading="lazy" alt="Llantas seminuevas en buen estado, foto 7">
   </div>
 
   <section class="branches" aria-labelledby="suc">

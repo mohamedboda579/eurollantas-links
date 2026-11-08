@@ -71,6 +71,12 @@ body {
 .branches ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .branches li { padding: 12px 0; border-bottom: 1px solid var(--line); }
 .branches li:last-child { border-bottom: 0; padding-bottom: 0; }
+.sizes { margin-top: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.chips a { border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; color: var(--ink); text-decoration: none; font-size: 14px; }
+.chips a:hover { border-color: var(--flame); color: var(--ember); }
+.sizes .more { margin: 0; font-size: 14px; color: var(--muted); }
+.sizes .more a { color: var(--ember); }
 .b-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .b-name { font-size: 17px; font-weight: 600; }
 .b-status { white-space: nowrap; flex-shrink: 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
@@ -102,9 +108,9 @@ body {
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 </style>
 
-<meta name="description" content="Eurollantas S.A. Llantas nuevas y usadas. Escríbenos por WhatsApp.">
+<meta name="description" content="Eurollantas S.A. Llantas usadas al detal y al mayor en Panamá. 4 locales. Escríbenos por WhatsApp.">
 <meta property="og:title" content="Eurollantas Panamá">
-<meta property="og:description" content="Llantas nuevas y usadas. Escríbenos por WhatsApp.">
+<meta property="og:description" content="Llantas usadas al detal y al mayor en Panamá. Escríbenos por WhatsApp.">
 <meta property="og:image" content="https://eurollantaspanama.com/logo.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="logo.jpg">
@@ -114,7 +120,7 @@ body {
 <main class="wrap">
   <div class="logo"><img src="logo.jpg" alt="Eurollantas S.A. Tu mejor opción" width="760" height="456"></div>
 
-  <p class="tagline">Llantas nuevas y usadas</p>
+  <p class="tagline">Llantas usadas</p>
 
   <section class="promo" aria-labelledby="promo-t">
     <h2 id="promo-t"><span>Llantas a</span> $9.99</h2>
@@ -207,6 +213,26 @@ body {
         </div>
       </li>
     </ul>
+  </section>
+
+  <section class="branches sizes" aria-labelledby="med">
+    <h2 id="med">Llantas por medida</h2>
+    <div class="chips">
+      <a href="llantas-175-70-r14-panama.html">175/70R14</a>
+      <a href="llantas-215-70-r16-panama.html">215/70R16</a>
+      <a href="llantas-245-70-r16-panama.html">245/70R16</a>
+      <a href="llantas-265-70-r16-panama.html">265/70R16</a>
+      <a href="llantas-225-60-r17-panama.html">225/60R17</a>
+      <a href="llantas-235-60-r17-panama.html">235/60R17</a>
+      <a href="llantas-225-65-r17-panama.html">225/65R17</a>
+      <a href="llantas-235-65-r17-panama.html">235/65R17</a>
+      <a href="llantas-265-65-r17-panama.html">265/65R17</a>
+      <a href="llantas-215-35-r18-panama.html">215/35R18</a>
+      <a href="llantas-205-40-r18-panama.html">205/40R18</a>
+      <a href="llantas-245-35-r20-panama.html">245/35R20</a>
+      <a href="llantas-275-45-r20-panama.html">275/45R20</a>
+    </div>
+    <p class="more"><a href="llantas-usadas-panama.html">Todas las medidas</a> · <a href="llantas-al-mayor-panama.html">Al mayor</a> · <a href="locales.html">Locales</a></p>
   </section>
 
   <p class="mgmt"><b>Gerencia:</b> <a href="https://wa.me/50766195507?text=Hola,%20soy%20%5Bnombre%5D%20de%20%5Bempresa%5D.%20Motivo:%20" target="_blank" rel="noopener">+507 6619-5507</a></p>

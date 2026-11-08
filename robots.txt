@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://eurollantaspanama.com/sitemap.xml

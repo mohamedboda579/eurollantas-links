@@ -78,6 +78,7 @@ body {
 .sizes .more { margin: 0; font-size: 14px; color: var(--muted); }
 .sizes .more a { color: var(--ember); }
 .b-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.b-photo { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; margin: 0 0 10px; background: #111; }
 .b-name { font-size: 17px; font-weight: 600; }
 .b-status { white-space: nowrap; flex-shrink: 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
 .b-status.open { color: var(--wa); border-color: var(--wa); }
@@ -190,6 +191,7 @@ body {
         </div>
       </li>
       <li>
+        <img class="b-photo" src="sucursal-bethania.jpg" width="900" height="506" loading="lazy" alt="Fachada de Eurollantas en Bethania">
         <div class="b-top"><span class="b-name">Bethania</span><span class="b-status" data-status></span></div>
         <p class="b-hours">Lunes a sábado · 8:00 a.m. – 5:00 p.m.</p>
         <div class="b-actions">

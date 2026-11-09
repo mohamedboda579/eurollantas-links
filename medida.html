@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Qué medida de llanta usa mi carro? | Eurollantas Panamá</title>
+<meta name="description" content="Elige marca, modelo y año de tu carro y mira la medida de llanta que normalmente usa. Confirma con Eurollantas por WhatsApp.">
+<link rel="icon" href="logo.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+:root { --panel:#161413; --line:#342f2b; --ink:#f5efe7; --muted:#b3a89c; --flame:#ff7a00; --ember:#ffb21a; --wa:#25d366; --wa-ink:#07210f;
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif; --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; color-scheme:dark; }
+* { box-sizing: border-box; }
+body { margin:0; background:#000; color:var(--ink); font:400 16px/1.5 var(--body); }
+main { max-width:480px; margin:0 auto; padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left)); display:flex; flex-direction:column; gap:14px; }
+.back { color:var(--flame); text-decoration:none; font-weight:600; padding:8px 0; }
+h1 { margin:0; font:700 34px/1.05 var(--display); text-transform:uppercase; letter-spacing:.03em; }
+.sub { margin:0; color:var(--muted); font-size:15px; }
+label { display:block; font:600 14px/1 var(--display); text-transform:uppercase; letter-spacing:.1em; color:var(--ember); margin:0 0 6px; }
+select { width:100%; min-height:52px; padding:0 14px; font:500 18px var(--body); color:var(--ink); background:var(--panel); border:2px solid var(--line); border-radius:10px; appearance:none; -webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--flame) 50%),linear-gradient(135deg,var(--flame) 50%,transparent 50%); background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%; background-size:6px 6px; background-repeat:no-repeat; }
+select:disabled { opacity:.45; }
+select:focus-visible, .btn:focus-visible { outline:3px solid var(--ember); outline-offset:2px; }
+.res { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
+.res[hidden] { display:none; }
+.res small { color:var(--muted); font-size:14px; }
+.sizes { display:flex; flex-wrap:wrap; gap:10px; margin:8px 0 6px; }
+.sizes span { font:700 34px/1 var(--display); color:var(--ember); letter-spacing:.02em; border:2px solid var(--flame); border-radius:10px; padding:8px 12px; }
+.note { margin:10px 0 0; font-size:13px; color:var(--muted); }
+.btn { display:flex; align-items:center; justify-content:center; min-height:60px; margin-top:14px; padding:12px 16px; border-radius:10px; background:var(--wa); color:var(--wa-ink); text-decoration:none; font:700 22px/1.1 var(--display); text-transform:uppercase; letter-spacing:.05em; text-align:center; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="./">← Volver</a>
+  <h1>¿Qué llanta usa mi carro?</h1>
+  <p class="sub">Elige tu carro y mira la medida que normalmente lleva.</p>
+
+  <div><label for="m">Marca</label><select id="m"><option value="">Elige la marca</option></select></div>
+  <div><label for="o">Modelo</label><select id="o" disabled><option value="">Elige el modelo</option></select></div>
+  <div><label for="y">Año</label><select id="y" disabled><option value="">Elige el año</option></select></div>
+
+  <section class="res" id="res" hidden aria-live="polite">
+    <small id="car"></small>
+    <div class="sizes" id="sizes"></div>
+    <p class="note">Medida orientativa: cambia según la versión de tu carro. La medida exacta está impresa en el costado de tu llanta (ej. 205/55 R16). Escríbenos y te confirmamos si la tenemos.</p>
+    <a class="btn" id="wa" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+  </section>
+
+  <p class="sub" id="none" hidden>¿No ves tu carro? <a style="color:var(--flame)" href="https://wa.me/5073909390?text=Hola%20Eurollantas,%20quiero%20saber%20qu%C3%A9%20medida%20de%20llanta%20usa%20mi%20carro.%20Marca,%20modelo%20y%20a%C3%B1o:%20" target="_blank" rel="noopener">Escríbenos tu marca, modelo y año</a>.</p>
+</main>
+<script>
+(function () {
+  // [desde, hasta, [medidas]] por generación. Medidas típicas de fábrica; orientativas.
+  var D = {
+    "Toyota": {
+      "Yaris": [[2006,2013,["185/60R15","175/65R14"]],[2014,2026,["185/60R15","195/50R16"]]],
+      "Etios": [[2013,2022,["175/65R14","185/60R15"]]],
+      "Corolla": [[2003,2008,["195/65R15"]],[2009,2019,["205/55R16","195/65R15"]],[2020,2026,["205/55R16","225/45R17"]]],
+      "Camry": [[2007,2017,["215/60R16","215/55R17"]],[2018,2026,["215/55R17","235/45R18"]]],
+      "RAV4": [[2006,2012,["225/65R17"]],[2013,2018,["225/65R17","235/55R18"]],[2019,2026,["225/65R17","235/55R19"]]],
+      "Hilux": [[2005,2015,["265/65R17","255/70R15"]],[2016,2026,["265/65R17","265/60R18","255/70R16"]]],
+      "Fortuner": [[2008,2026,["265/65R17","265/60R18"]]],
+      "Prado": [[2003,2009,["265/65R17"]],[2010,2026,["265/65R17","265/60R18"]]]
+    },
+    "Hyundai": {
+      "Accent": [[2006,2017,["175/70R14","185/65R15"]],[2018,2026,["185/65R15","195/55R16"]]],
+      "Elantra": [[2007,2010,["195/65R15","205/55R16"]],[2011,2016,["205/55R16","215/45R17"]],[2017,2026,["205/55R16","225/45R17"]]],
+      "Tucson": [[2005,2009,["215/65R16"]],[2010,2015,["215/65R16","225/60R17"]],[2016,2026,["225/60R17","235/55R19"]]],
+      "Santa Fe": [[2007,2012,["235/60R17","235/55R18"]],[2013,2018,["235/65R17","235/60R18"]],[2019,2026,["235/65R17","235/60R18"]]],
+      "Grand i10": [[2014,2026,["165/65R14","175/60R15"]]],
+      "Creta": [[2017,2026,["205/65R16","215/60R17"]]]
+    },
+    "Kia": {
+      "Picanto": [[2005,2026,["155/65R14","165/60R15"]]],
+      "Rio": [[2006,2017,["175/70R14","185/65R15"]],[2018,2026,["185/65R15","195/55R16"]]],
+      "Cerato / Forte": [[2009,2018,["205/55R16","215/45R17"]]],
+      "Sportage": [[2005,2010,["215/65R16"]],[2011,2015,["215/65R16","225/55R17"]],[2016,2026,["225/60R17","235/55R18"]]],
+      "Sorento": [[2010,2014,["235/65R17","235/55R19"]],[2015,2026,["235/65R17","235/60R18"]]],
+      "Soul": [[2010,2019,["205/60R16","235/45R18"]]]
+    },
+    "Honda": {
+      "Fit / Jazz": [[2009,2014,["175/65R15"]],[2015,2026,["175/65R15","185/55R16"]]],
+      "City": [[2009,2026,["175/65R15","185/55R16"]]],
+      "Civic": [[2006,2011,["205/55R16","215/45R17"]],[2012,2015,["195/65R15","205/55R16"]],[2016,2021,["215/55R16","215/50R17"]]],
+      "Accord": [[2008,2012,["215/60R16","225/50R17"]],[2013,2017,["205/65R16","215/55R17"]],[2018,2026,["235/45R18","235/40R19"]]],
+      "CR-V": [[2007,2011,["215/65R16","225/65R17"]],[2012,2016,["225/65R17"]],[2017,2026,["235/65R17","235/60R18"]]],
+      "HR-V": [[2016,2026,["215/60R17","215/55R18"]]]
+    },
+    "Nissan": {
+      "March": [[2011,2026,["165/70R14","185/60R15"]]],
+      "Versa": [[2012,2026,["185/65R15","195/55R16"]]],
+      "Sentra": [[2007,2012,["195/65R15","205/55R16"]],[2013,2019,["195/65R15","205/50R17"]],[2020,2026,["205/60R16","215/50R17"]]],
+      "Kicks": [[2017,2026,["205/60R16","205/55R17"]]],
+      "Qashqai": [[2008,2026,["215/60R16","215/55R17"]]],
+      "Rogue": [[2008,2013,["215/70R16","225/65R17"]],[2014,2026,["225/65R17","225/60R18"]]],
+      "X-Trail": [[2008,2013,["215/65R16","225/65R17"]],[2014,2026,["225/65R17","225/60R18"]]],
+      "Frontier": [[2005,2015,["255/70R16","265/65R17"]],[2016,2026,["255/70R16","265/60R18"]]]
+    },
+    "Mazda": {
+      "Mazda 2": [[2008,2026,["185/65R15","185/60R16"]]],
+      "Mazda 3": [[2004,2009,["195/65R15","205/55R16"]],[2010,2013,["205/55R16","205/50R17"]],[2014,2026,["205/60R16","215/45R18"]]],
+      "Mazda 6": [[2009,2013,["205/60R16","225/50R17"]],[2014,2026,["225/55R17","225/45R19"]]],
+      "CX-3": [[2016,2026,["205/60R16","215/50R18"]]],
+      "CX-5": [[2013,2026,["225/65R17","225/55R19"]]]
+    },
+    "Chevrolet": {
+      "Spark": [[2010,2026,["155/65R14","165/60R15"]]],
+      "Aveo": [[2008,2011,["185/60R14","185/55R15"]],[2012,2026,["185/60R15","185/55R15"]]],
+      "Sail": [[2012,2026,["175/70R14","185/60R15"]]],
+      "Cruze": [[2011,2016,["205/60R16","215/50R17"]],[2017,2026,["215/55R16","215/50R17"]]],
+      "Captiva": [[2008,2026,["235/55R17","235/50R19"]]],
+      "Equinox": [[2010,2017,["235/65R17","235/55R18"]],[2018,2026,["225/65R17","235/55R18"]]]
+    },
+    "Ford": {
+      "Fiesta": [[2008,2019,["175/65R14","195/50R16"]]],
+      "Focus": [[2008,2011,["205/55R16"]],[2012,2018,["205/60R16","215/50R17"]]],
+      "Escape": [[2013,2019,["235/55R17","235/50R18"]]],
+      "Explorer": [[2011,2019,["245/60R18","255/50R20"]]],
+      "Ranger": [[2012,2026,["255/70R16","265/65R17"]]]
+    },
+    "Mitsubishi": {
+      "Mirage": [[2013,2026,["165/65R14","175/55R15"]]],
+      "Lancer": [[2008,2017,["205/60R16","215/45R17"]]],
+      "ASX": [[2011,2026,["215/60R17","225/55R18"]]],
+      "Outlander": [[2007,2012,["215/70R16","225/55R18"]],[2013,2026,["225/65R17","225/55R18"]]],
+      "L200": [[2006,2015,["245/70R16","265/65R17"]],[2016,2026,["265/65R17","265/60R18"]]],
+      "Montero Sport": [[2009,2026,["265/65R17","265/60R18"]]]
+    },
+    "Suzuki": {
+      "Swift": [[2005,2026,["175/65R14","185/55R16"]]],
+      "Celerio": [[2015,2026,["155/65R14"]]],
+      "Vitara": [[2016,2026,["215/55R17","215/60R16"]]],
+      "Grand Vitara": [[2006,2015,["225/65R17","225/70R16"]]],
+      "Jimny": [[2000,2026,["205/70R15","195/80R15"]]]
+    },
+    "Volkswagen": {
+      "Jetta": [[2006,2018,["205/55R16","195/65R15"]],[2019,2026,["205/55R16","225/45R17"]]],
+      "Golf": [[2008,2026,["205/55R16","225/45R17"]]],
+      "Tiguan": [[2009,2026,["215/65R16","235/55R17"]]]
+    },
+    "Subaru": {
+      "Impreza": [[2008,2026,["205/55R16","205/50R17"]]],
+      "Forester": [[2009,2013,["215/70R16","225/55R17"]],[2014,2026,["225/60R17","225/55R18"]]],
+      "XV": [[2012,2026,["225/60R17","225/55R18"]]]
+    },
+    "BMW": {
+      "Serie 3": [[2006,2011,["205/55R16","225/45R17"]],[2012,2018,["225/50R17","225/45R18"]]]
+    },
+    "Mercedes-Benz": {
+      "Clase C": [[2008,2014,["205/55R16","225/45R17"]],[2015,2026,["205/60R16","225/50R17"]]]
+    },
+    "Jeep": {
+      "Wrangler": [[2007,2026,["255/75R17","255/70R18"]]],
+      "Grand Cherokee": [[2005,2010,["245/70R17"]],[2011,2026,["265/60R18","265/50R20"]]]
+    }
+  };
+  var $ = function (i) { return document.getElementById(i); };
+  var m = $("m"), o = $("o"), y = $("y"), res = $("res");
+  function opts(sel, ph, list) {
+    sel.innerHTML = "";
+    var f = document.createElement("option"); f.value = ""; f.textContent = ph; sel.appendChild(f);
+    list.forEach(function (v) { var e = document.createElement("option"); e.value = v; e.textContent = v; sel.appendChild(e); });
+  }
+  function fmt(s) { return s.replace("R", " R"); }
+  opts(m, "Elige la marca", Object.keys(D));
+  m.onchange = function () {
+    res.hidden = true; y.disabled = true; opts(y, "Elige el año", []);
+    if (!m.value) { o.disabled = true; opts(o, "Elige el modelo", []); return; }
+    opts(o, "Elige el modelo", Object.keys(D[m.value])); o.disabled = false;
+  };
+  o.onchange = function () {
+    res.hidden = true;
+    if (!o.value) { y.disabled = true; opts(y, "Elige el año", []); return; }
+    var g = D[m.value][o.value], lo = 9999, hi = 0, yrs = [];
+    g.forEach(function (r) { lo = Math.min(lo, r[0]); hi = Math.max(hi, r[1]); });
+    hi = Math.min(hi, new Date().getFullYear() + 1);
+    for (var k = hi; k >= lo; k--) yrs.push(String(k));
+    opts(y, "Elige el año", yrs); y.disabled = false;
+  };
+  y.onchange = function () {
+    if (!y.value) { res.hidden = true; return; }
+    var yr = +y.value, g = D[m.value][o.value], s = null;
+    g.forEach(function (r) { if (yr >= r[0] && yr <= r[1]) s = r[2]; });
+    if (!s) { res.hidden = true; return; }
+    var car = m.value + " " + o.value + " " + y.value;
+    $("car").textContent = car + (s.length > 1 ? " · según la versión, usa una de estas:" : " · usa:");
+    $("sizes").innerHTML = "";
+    s.forEach(function (z) { var e = document.createElement("span"); e.textContent = fmt(z); $("sizes").appendChild(e); });
+    var msg = "Hola Eurollantas, mi carro es un " + car + ". Veo que usa " + s.map(fmt).join(" o ") + ". ¿Tienen disponible y cuánto cuesta? ";
+    $("wa").href = "https://wa.me/5073909390?text=" + encodeURIComponent(msg);
+    res.hidden = false;
+  };
+  $("none").hidden = false;
+})();
+</script>
+</body>
+</html>
